@@ -361,6 +361,30 @@ module.exports = {
     }
   },
 
+  addFeature: async (req, res) => {
+    const { name, qty, itemId } = req.body;
+    try {
+      if (!req.file) {
+        req.flash("alertMessage", "Succes Add Feature!");
+        req.flash("alertStatus", "success");
+        res.redirect(`/admin/item/show-detail-item/${itemId}`);
+      }
+      await Bank.create({
+        name,
+        qty,
+        itemId,
+        imageUrl: `images/${req.file.filename}`,
+      });
+      req.flash("alertMessage", "Succes Add Feture!");
+      req.flash("alertStatus", "success");
+      res.redirect(`/admin/item/show-detail-item/${itemId}`);
+    } catch (error) {
+      req.flash("alertMessage", `${error.message}`);
+      req.flash("alertStatus", "danger");
+      res.redirect(`/admin/item/show-detail-item/${itemId}`);
+    }
+  },
+
   viewBooking: (req, res) => {
     res.render("admin/booking/view_booking", {
       title: "Staycation | Booking",
