@@ -4,11 +4,11 @@ const { ObjectId } = mongoose.Schema;
 const categorySchema = new mongoose.Schema({
   name: {
     type: String,
-    require: true,
+    required: true,
   },
   itemId: [
     {
-      type: Object,
+      type: ObjectId,
       ref: "Item",
     },
   ],

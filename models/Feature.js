@@ -4,15 +4,15 @@ const { ObjectId } = mongoose.Schema;
 const featureSchema = new mongoose.Schema({
   name: {
     type: String,
-    require: true,
+    required: true,
   },
   qty: {
     type: Number,
-    require: true,
+    required: true,
   },
   imageUrl: {
     type: String,
-    require: true,
+    required: true,
   },
   itemId: {
     type: ObjectId,
@@ -20,4 +20,4 @@ const featureSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.module("Feature", featureSchema);
+module.exports = mongoose.model("Feature", featureSchema);

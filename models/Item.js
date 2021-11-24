@@ -4,11 +4,11 @@ const { ObjectId } = mongoose.Schema;
 const itemSchema = new mongoose.Schema({
   title: {
     type: String,
-    require: true,
+    required: true,
   },
   price: {
     type: Number,
-    require: true,
+    required: true,
   },
   country: {
     type: String,
@@ -20,10 +20,19 @@ const itemSchema = new mongoose.Schema({
   },
   isPopular: {
     type: Boolean,
+    default: false,
   },
   description: {
     type: String,
-    require: true,
+    required: true,
+  },
+  unit: {
+    type: String,
+    default: "night",
+  },
+  sumBooking: {
+    type: Number,
+    default: 0,
   },
   categoryId: {
     type: ObjectId,
