@@ -4,6 +4,7 @@
   role="tabpanel"
   aria-labelledby="home-tab"
 >
+  <!-- DataTales Example -->
   <div class="card shadow mb-4 mt-2">
     <div class="card-body">
       <div class="row">
@@ -19,7 +20,7 @@
                 type="text"
                 class="form-control"
                 name="name"
-                placeholder="Enter Name"
+                placeholder="Enter name"
                 required
               />
             </div>
@@ -54,21 +55,21 @@
                   <th>No</th>
                   <th>Name</th>
                   <th>QTY</th>
-                  <th>Image Url</th>
+                  <th>Image URL</th>
                   <th>Action</th>
                 </tr>
               </thead>
+
               <tbody>
                 <% for(let i = 0; i < feature.length; i++){ %>
                 <tr>
-                  <td><%= i + 1%></td>
+                  <td><%= i + 1 %></td>
                   <td><%= feature[i].name %></td>
                   <td><%= feature[i].qty %></td>
                   <td>
                     <img
-                      src="http://localhost:3000/<%= feature[i].imageUrl %> "
+                      src="http://localhost:3000/<%= feature[i].imageUrl %>"
                       alt="imageUrl"
-                      height="70px"
                       width="70px"
                     />
                   </td>
@@ -78,12 +79,12 @@
                       method="POST"
                     >
                       <a
-                        href="javascript:void()"
+                        href="javascript:void();"
                         type="button"
                         class="btn btn-warning btn-circle btn-sm button-update"
                         data-id="<%= feature[i].id %>"
                         data-name="<%= feature[i].name %>"
-                        data-namefeature="<%= feature[i].namefeature %>"
+                        data-qty="<%= feature[i].qty %>"
                         ><i class="fas fa-edit"></i
                       ></a>
                       <button

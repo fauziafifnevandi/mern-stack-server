@@ -4,15 +4,15 @@ const { ObjectId } = mongoose.Schema;
 const activitySchema = new mongoose.Schema({
   name: {
     type: String,
-    require: true,
+    required: true,
   },
   type: {
     type: String,
-    require: true,
+    required: true,
   },
   imageUrl: {
     type: String,
-    require: true,
+    required: true,
   },
   isPopular: {
     type: Boolean,
