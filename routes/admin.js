@@ -1,10 +1,13 @@
 const router = require("express").Router();
 const adminController = require("../controller/adminController");
 const { upload, uploadMultiple } = require("../middlewares/multer");
+const auth = require("../middlewares/auth");
 
 // endpoint dashboard & succes allert
 router.get("/signin", adminController.viewSignin);
 router.post("/signin", adminController.actionSignin);
+router.use(auth);
+router.get("/logout", adminController.actionLogout);
 router.get("/dashboard", adminController.viewDashboard);
 
 // endpoint category

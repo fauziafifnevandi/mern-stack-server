@@ -4,10 +4,12 @@ const Item = require("../models/Item");
 const Image = require("../models/Image");
 const Feature = require("../models/Feature");
 const Activity = require("../models/Activity");
+const Booking = require("../models/Booking");
+const Member = require("../models/Member");
 const Users = require("../models/Users");
 const fs = require("fs-extra");
 const path = require("path");
-const bycrypt = require("bcryptjs");
+const bcrypt = require("bcryptjs");
 
 module.exports = {
   viewSignin: async (req, res) => {
@@ -15,10 +17,14 @@ module.exports = {
       const alertMessage = req.flash("alertMessage");
       const alertStatus = req.flash("alertStatus");
       const alert = { message: alertMessage, status: alertStatus };
-      res.render("index", {
-        alert,
-        title: "Staycation | Category",
-      });
+      if (req.session.user == null || req.session.user == undefined) {
+        res.render("index", {
+          alert,
+          title: "Staycation | Login",
+        });
+      } else {
+        res.redirect("/admin/dashboard");
+      }
     } catch (error) {
       res.redirect("/admin/signin");
     }
@@ -33,23 +39,38 @@ module.exports = {
         req.flash("alertStatus", "danger");
         res.redirect("/admin/signin");
       }
-      const isPasswordMatch = await bycrypt.compare(password, user.password);
+      const isPasswordMatch = await bcrypt.compare(password, user.password);
       if (!isPasswordMatch) {
         req.flash("alertMessage", "Password yang anda masukan tidak cocok!");
         req.flash("alertStatus", "danger");
         res.redirect("/admin/signin");
       }
+      req.session.user = {
+        id: user.id,
+        username: user.username,
+      };
+
       res.redirect("/admin/dashboard");
     } catch (error) {
-      res.redirect("/admin/signin");
+      req.flash("alertMessage", "User yang anda masukan belum ada!");
+      req.flash("alertStatus", "danger");
+      res.render("index");
     }
+  },
+
+  actionLogout: (req, res) => {
+    req.session.destroy();
+    res.redirect("/admin/signin");
   },
 
   // Dashboard
   viewDashboard: (req, res) => {
-    res.render("admin/dashboard/view_dashboard", {
-      title: "Staycation | Dashboard",
-    });
+    try {
+      res.render("admin/dashboard/view_dashboard", {
+        title: "Staycation | Dashboard",
+        user: req.session.user,
+      });
+    } catch (error) {}
   },
 
   // Catgory
@@ -63,6 +84,7 @@ module.exports = {
         category,
         alert,
         title: "Staycation | Category",
+        user: req.session.user,
       });
     } catch (error) {
       res.redirect("/admin/category");
@@ -126,6 +148,7 @@ module.exports = {
         title: "Staycation | Dashboard",
         alert,
         bank,
+        user: req.session.user,
       });
     } catch (error) {
       req.flash("alertMessage", `${error.message}`);
@@ -218,6 +241,7 @@ module.exports = {
         alert,
         item,
         action: "view",
+        user: req.session.user,
       });
     } catch (error) {
       req.flash("alertMessage", `${error.message}`);
@@ -275,6 +299,7 @@ module.exports = {
         alert,
         item,
         action: "show image",
+        user: req.session.user,
       });
     } catch (error) {
       req.flash("alertMessage", `${error.message}`);
@@ -303,6 +328,7 @@ module.exports = {
         item,
         category,
         action: "edit",
+        user: req.session.user,
       });
       console.log(item);
     } catch (error) {
@@ -398,6 +424,7 @@ module.exports = {
         itemId,
         feature,
         activity,
+        user: req.session.user,
       });
     } catch (error) {
       req.flash("alertMessage", `${error.message}`);
@@ -572,9 +599,17 @@ module.exports = {
     }
   },
 
-  viewBooking: (req, res) => {
-    res.render("admin/booking/view_booking", {
-      title: "Staycation | Booking",
-    });
+  viewBooking: async (req, res) => {
+    try {
+      const booking = await Booking.find()
+        .populate("memberId")
+        .populate("bankId");
+      console.log(booking);
+      res.render("admin/booking/view_booking", {
+        title: "Staycation | Booking",
+        user: req.session.user,
+        booking,
+      });
+    } catch (error) {}
   },
 };
