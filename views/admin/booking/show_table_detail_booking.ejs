@@ -5,15 +5,47 @@
   </div>
   <div class="card-body">
     <div class="row">
-      <div class="col-md-4"> 
+      <div class="col-md-4">
         <img
-            src="http://localhost:3000/<%= booking.payments.proofPayment %> "
-            alt="image"
-            style="width: 100%; display: block"
-          />
+          src="http://localhost:3000/<%= booking.payments.proofPayment %> "
+          alt="image"
+          style="width: 100%; display: block"
+        />
+        <div class="row ml-1">
+          <% if(booking.payments.status == 'Process'){ %>
+          <form
+            action="/admin/booking/<%= booking.id %>/confirmation?_method=PUT "
+            method="POST"
+          >
+            <button type="submit" class="btn btn-success btn-sm">
+              <i class="fas fa-check"></i>
+              Success
+            </button>
+          </form>
+          <form
+            action="/admin/booking/<%= booking.id %>/reject?_method=PUT "
+            method="POST"
+            class="ml-2"
+          >
+            <button type="submit" class="btn btn-danger btn-sm">
+              <i class="fas fa-times"></i>
+              Reject
+            </button>
+          </form>
+          <% } else if (booking.payments.status == 'Succes'|| 'Reject'){%>
+          <form
+            action="/admin/booking/<%= booking.id %>/process?_method=PUT "
+            method="POST"
+            class="ml-2"
+          >
+            <button type="submit" class="btn btn-warning btn-sm">
+              <i class="fas fa-times"></i>
+              Proses
+            </button>
+          </form>
+          <% } %>
         </div>
       </div>
-       <div class="row"></div>
       <div class="col-md-8">
         <div class="table-responsive">
           <table
@@ -24,14 +56,23 @@
           >
             <thead>
               <tr>
-                <th>No</th>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Image URL</th>
-                <th>Action</th>
+                <th>Name Member</th>
+                <th>Total</th>
+                <th>Bank From</th>
+                <th>Title</th>
               </tr>
             </thead>
-            <tbody></tbody>
+            <tbody>
+              <tr>
+                <td>
+                  <%= booking.memberId.firstName %> <%=
+                  booking.memberId.lastName %>
+                </td>
+                <td>$ <%= booking.total %></td>
+                <td><%= booking.payments.bankFrom %></td>
+                <td><%= booking.itemId.title %></td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </div>

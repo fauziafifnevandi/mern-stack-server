@@ -16,6 +16,7 @@ var usersRouter = require("./routes/users");
 
 // router admin
 const adminRouter = require("./routes/admin");
+const apiRouter = require("./routes/api");
 
 var app = express();
 
@@ -46,6 +47,8 @@ app.use(
 );
 
 app.use("/admin", adminRouter);
+app.use("/api/v1", apiRouter);
+
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 
