@@ -47,7 +47,7 @@ app.use(
 );
 
 app.use("/admin", adminRouter);
-app.use("/api/v1", apiRouter);
+app.use("/api/v1/member", apiRouter);
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
