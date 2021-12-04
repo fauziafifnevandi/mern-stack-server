@@ -114,9 +114,9 @@ module.exports = {
     const {
       idItem,
       duration,
-      price,
-      bookingDateStart,
-      bookingDateEnd,
+      // price,
+      bookingStartDate,
+      bookingEndDate,
       firstName,
       lastName,
       email,
@@ -124,18 +124,18 @@ module.exports = {
       accountHolder,
       bankFrom,
     } = req.body;
-
     if (!req.file) {
       return res.status(404).json({ message: "Image not found" });
     }
+
     console.log(idItem);
 
     if (
       idItem === undefined ||
       duration === undefined ||
-      price === undefined ||
-      bookingDateStart === undefined ||
-      bookingDateEnd === undefined ||
+      // price === undefined ||
+      bookingStartDate === undefined ||
+      bookingEndDate === undefined ||
       firstName === undefined ||
       lastName === undefined ||
       email === undefined ||
@@ -143,8 +143,8 @@ module.exports = {
       accountHolder === undefined ||
       bankFrom === undefined
     ) {
-      res.status(404).json({ message: "lengkapi semua file" });
+      return res.status(404).json({ message: "Lengkapi Semua Field" });
     }
-    res.status(201).json({ message: "success booking" });
+    res.status(201).json({ message: "booking sukses" });
   },
 };
